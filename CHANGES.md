@@ -2,9 +2,9 @@
 
 Dec X, 2017
 
-- **NEW**: Remove converting spaces to `&nbsp;` and remove converting tabs to spaces.
+- **NEW**: Better tab conversion algorithm. Converts tabs to spaces based on tab stops (though it doesn't account for character width).
+- **NEW**: Using `disable_nbsp` will insert real tabs or spaces.
 - **NEW**: Settings are gathered from the view under conversion, not the global preferences.
-- **FIX**: Fix related tab display issues.
 - **FIX**: Font in HTML not being displayed correctly.
 
 # ExportHtml 2.11.0

@@ -11,6 +11,7 @@ span.code_gutter { vertical-align: top; }
     background-color: {{ var.page_bg }};
     font-family: {{ var.font_face }}, "Courier", Monospace;
     font-size: {{ var.font_size }}pt;
+    tab-size: {{var.tab_size}};
 }
 .simple_code_page { background-color: white; color: black }
 .code_gutter { display: {{ var.display_mode }}; background-color: {{ var.gutter_bg }}; padding-right: 10px; }
