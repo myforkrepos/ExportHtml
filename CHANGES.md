@@ -1,3 +1,12 @@
+# ExportHtml 2.12.0
+
+Dec X, 2017
+
+- **NEW**: Remove converting spaces to `&nbsp;` and remove converting tabs to spaces.
+- **NEW**: Settings are gathered from the view under conversion, not the global preferences.
+- **FIX**: Fix related tab display issues.
+- **FIX**: Font in HTML not being displayed correctly.
+
 # ExportHtml 2.11.0
 
 Nov 20, 2017

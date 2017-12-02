@@ -367,7 +367,6 @@ class ExportHtml(object):
             "view_open": bool(kwargs.get("view_open", False)),
             "shift_brightness": bool(kwargs.get("shift_brightness", False)),
             "filter": kwargs.get("filter", ""),
-            "disable_nbsp": kwargs.get('disable_nbsp', False),
             "table_mode": kwargs.get("table_mode", True)
         }
 
@@ -375,7 +374,7 @@ class ExportHtml(object):
         """Get get general document preferences from sublime preferences."""
 
         eh_settings = sublime.load_settings(PACKAGE_SETTINGS)
-        settings = sublime.load_settings('Preferences.sublime-settings')
+        settings = self.view.settings()
         alternate_font_size = eh_settings.get("alternate_font_size", False)
         alternate_font_face = eh_settings.get("alternate_font_face", False)
         self.font_size = settings.get('font_size', 10) if alternate_font_size is False else alternate_font_size
@@ -393,7 +392,6 @@ class ExportHtml(object):
         self.date_time_format = kwargs["date_time_format"]
         self.time = time.localtime()
         self.show_full_path = kwargs["show_full_path"]
-        self.disable_nbsp = kwargs["disable_nbsp"]
         self.sels = []
         self.ignore_selections = kwargs["ignore_selections"]
         if self.ignore_selections:
@@ -529,7 +527,7 @@ class ExportHtml(object):
                 "line_id": num,
                 "color": self.gfground,
                 "bgcolor": self.gbground,
-                "line": (line_text.replace(" ", '&nbsp;') if not self.disable_nbsp else line_text),
+                "line": line_text,
                 "code_id": num,
                 "code": line,
                 "table": self.tables,
@@ -540,7 +538,7 @@ class ExportHtml(object):
                 "line_id": num,
                 "color": self.gfground,
                 "bgcolor": self.gbground,
-                "line": (line_text.replace(" ", '&nbsp;') if not self.disable_nbsp else line_text),
+                "line": line_text,
                 "code_id": num,
                 "code": line,
                 "table": self.tables
@@ -595,22 +593,12 @@ class ExportHtml(object):
             '&': '&amp;',
             '>': '&gt;',
             '<': '&lt;',
-            '\t': ' ' * self.tab_size,
             '\n': ''
         }
 
-        if self.disable_nbsp:
-            return ''.join(
-                encode_table.get(c, c) for c in text
-            ).encode('ascii', 'xmlcharrefreplace').decode("utf-8")
-        else:
-            return re.sub(
-                r'(?<=^) | (?= )' if start_pt is not None and start_pt == self.line_start else r' (?= )',
-                lambda m: '&nbsp;' * len(m.group(0)),
-                ''.join(
-                    encode_table.get(c, c) for c in text
-                ).encode('ascii', 'xmlcharrefreplace').decode("utf-8")
-            )
+        return ''.join(
+            encode_table.get(c, c) for c in text
+        ).encode('ascii', 'xmlcharrefreplace').decode("utf-8")
 
     def get_annotations(self):
         """Get annotation."""
@@ -684,10 +672,7 @@ class ExportHtml(object):
         if not style:
             style == 'normal'
 
-        if empty:
-            text = '&nbsp;' if not self.disable_nbsp else ' '
-        else:
-            style += " real_text"
+        style += " real_text"
 
         if bgcolor is None:
             bgcolor = self.bground
