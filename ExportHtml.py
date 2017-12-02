@@ -27,7 +27,6 @@ import sublime_plugin
 from os import path
 import tempfile
 import time
-import re
 from .HtmlAnnotations import get_annotations
 from .lib.browser import open_in_browser
 from .lib.color_scheme_matcher import ColorSchemeMatcher
